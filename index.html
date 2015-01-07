@@ -7,13 +7,15 @@
     <script type="text/javascript" src="/js/jquery-1.11.1.min.js"></script>
     <script type="text/javascript" src="/js/jquery.qtip.min.js"></script>
     <script type="text/javascript" src="/js/raphael-min.js"></script>
-    <script type="text/javascript" src="node_modules/kartograph-js/dist/kartograph.min.js"></script>
-
+    <script type="text/javascript" src="/js/require.js"></script>
+    <script type="text/javascript" src="/node_modules/kartograph-js/dist/kartograph.min.js"></script>
+    <script type="text/javascript" src="/js/helpers.js"></script>
+    <script type="text/javascript" src="/js/underscore-min.js"></script>
 
     <script type="text/javascript">
 
         $(function() {
-
+                
             // initialize tooltips
             $.fn.qtip.defaults.style.classes = 'ui-tooltip-bootstrap';
             $.fn.qtip.defaults.style.def = false;
@@ -45,12 +47,11 @@
                 });
 
                 $.ajax({
-                    url: 'cities.json',
+                    url: 'data/laureates-cities.json',
                     dataType: 'json',
                     success: function(cities) {
 
-                        console.log(cities);
-                        var scale = kartograph.scale.sqrt(cities.concat([{ nb_visits: 0 }]), 'nb_visits').range([0, 60]);
+                        var scale = kartograph.scale.sqrt(cities.concat([{ nb_laureates: 0 }]), 'nb_laureates').range([0, 60]);
 
                         map.addSymbols({
                             type: kartograph.Bubble,
@@ -59,10 +60,10 @@
                                 return [city.long, city.lat];
                             },
                             radius: function(city) {
-                                return scale(city.nb_visits);
+                                return scale(city.nb_laureates);
                             },
                             tooltip: function(city) {
-                                return '<h3>'+city.city_name+'</h3>'+city.nb_visits+' visits';
+                                return '<h3>'+city.city_name+'</h3>'+city.nb_laureates+' laureates';
                             },
                             sortBy: 'radius desc',
                             style: 'fill:#800; stroke: #fff; fill-opacity: 0.5;',
@@ -75,6 +76,7 @@
         });
 
     </script>
+    
 </head>
 <body>
     
